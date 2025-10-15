@@ -1,6 +1,6 @@
 # Air Quality Intelligence: Estimation and Prediction of Urban Pollution
 
-![AQI Advisor Dashboard Screenshot]
+![AQI Advisor Dashboard Screenshot](./assets/dashboard-screenshot.png)
 
 ## 📖 Overview
 
