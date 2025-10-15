@@ -38,7 +38,7 @@ Follow these instructions to get a copy of the project up and running on your lo
 
 ### Prerequisites
 
-* Python 3.9
+* Python 3.13
 * pip (Python package installer)
 * A running MySQL server instance
 
