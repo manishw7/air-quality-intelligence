@@ -1,0 +1,88 @@
+{% extends "_layout.html" %}
+
+{% block title %}Dashboard - AQI Advisor{% endblock %}
+
+{% block content %}
+<div class="container mx-auto p-4 md:p-8 space-y-8">
+    <div id="personal-advice-section" class="hidden p-5 bg-yellow-100/80 text-yellow-900 rounded-xl shadow-md border border-yellow-200 items-start gap-4">
+        <svg class="h-6 w-6 text-yellow-600 mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+        <div><h3 class="text-lg font-bold">Personalized Health Advisory</h3><p id="personal-advice-text" class="text-md"></p></div>
+    </div>
+    <main class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+        <div class="lg:col-span-2 space-y-8">
+            <div id="aqi-main-display" class="aqi-card-gradient p-6 rounded-2xl shadow-lg text-center text-white relative overflow-hidden min-h-[280px] flex flex-col justify-center items-center"></div>
+            <div class="bg-white p-6 rounded-2xl shadow-lg space-y-4">
+                <h2 class="text-xl font-bold border-b pb-3 mb-4">Controls</h2>
+                <button id="fetch-conditions-btn" class="w-full btn btn-primary"><svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h5M20 20v-5h-5M4 20h5v-5M20 4h-5v5"/></svg>Fetch & Predict Live Conditions</button>
+                <p id="fetch-status" class="text-xs text-center text-slate-500 h-4"></p>
+                <div>
+                    <button id="toggle-manual-form" class="w-full text-left font-semibold text-slate-700 flex justify-between items-center"><span>Manual Prediction</span><svg id="manual-form-arrow" class="w-5 h-5 transform transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg></button>
+                    <div id="prediction-form-container" class="hidden mt-4"><form id="prediction-form" class="space-y-4"></form></div>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-2xl shadow-lg">
+                <h2 class="text-xl font-bold mb-4">Future Forecast</h2>
+                <form id="forecast-form" class="space-y-4">
+                    <div><label for="hours" class="block text-sm font-medium text-slate-700">Forecast for next (hours)</label><input type="number" id="hours" name="hours" value="24" min="1" max="72" required class="form-input mt-1"></div>
+                    <button type="submit" class="w-full btn btn-secondary">Generate Forecast</button>
+                </form>
+            </div>
+        </div>
+        <div class="lg:col-span-3 bg-white p-6 rounded-2xl shadow-lg">
+            <div class="flex flex-col sm:flex-row justify-between sm:items-center mb-4">
+                <h2 class="text-xl font-bold">AQI Analysis</h2>
+                <button id="eda-btn" class="btn btn-secondary mt-2 sm:mt-0">Deep Dive into Historical Trends</button>
+            </div>
+            <div class="h-[350px]"><canvas id="aqiChart"></canvas></div>
+            <div id="forecast-table-container" class="mt-6 hidden">
+                <h3 class="text-lg font-semibold mb-3">Forecast Details</h3>
+                <div class="overflow-y-auto max-h-60 border border-slate-200 rounded-lg">
+                    <table class="min-w-full divide-y divide-slate-200"><thead class="bg-slate-50 sticky top-0"></thead><tbody class="bg-white divide-y divide-slate-200"></tbody></table>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<div id="eda-modal" class="fixed inset-0 z-50 hidden items-center justify-center overflow-y-auto bg-slate-900/80">
+    <div class="bg-slate-800 text-slate-200 rounded-2xl shadow-2xl p-6 m-4 max-w-7xl w-full max-h-[95vh] flex flex-col">
+       <div class="flex-shrink-0">
+           <div class="flex justify-between items-center mb-4 border-b border-slate-700 pb-4">
+               <h2 class="text-2xl font-semibold">Historical Trend Analysis</h2>
+               <button id="close-eda-modal" class="text-3xl font-bold text-slate-500 hover:text-white">&times;</button>
+           </div>
+           <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 items-end">
+               <div><label for="start-date" class="text-sm font-medium text-slate-400">Start Date</label><input type="date" id="start-date" class="form-input mt-1 w-full bg-slate-700 border-slate-600 text-slate-200"></div>
+               <div><label for="end-date" class="text-sm font-medium text-slate-400">End Date</label><input type="date" id="end-date" class="form-input mt-1 w-full bg-slate-700 border-slate-600 text-slate-200"></div>
+               <button id="run-analysis-btn" class="btn btn-primary w-full md:w-auto">Analyze</button>
+           </div>
+           <nav id="eda-tabs" class="flex border-b border-slate-700 mb-6"></nav>
+       </div>
+       <div class="flex-grow overflow-y-auto pr-2">
+           <div id="eda-loader" class="flex justify-center items-center h-64"><div class="loader" style="border-left-color: var(--c-primary-light);"></div></div>
+           <p id="eda-error" class="text-center text-red-400 hidden"></p>
+           <div id="eda-content" class="hidden">
+               <div id="eda-tab-timeseries" class="eda-tab-content space-y-12">
+                   <div><h3 class="text-xl font-semibold text-center mb-4">AQI Over Time</h3><div class="h-[350px]"><canvas id="aqiOverTimeChart"></canvas></div></div>
+                   <div><h3 class="text-xl font-semibold text-center mb-4">Statistical Breakdown</h3><div id="stats-cards" class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center"></div></div>
+                   <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                       <div><h4 class="text-lg font-medium text-center mb-2">AQI Distribution</h4><div class="h-[350px]"><canvas id="distChart"></canvas></div></div>
+                       <div><h4 class="text-lg font-medium text-center mb-2">Category Breakdown</h4><div class="h-[350px]"><canvas id="categoryPieChart"></canvas></div></div>
+                   </div>
+               </div>
+               <div id="eda-tab-trends" class="eda-tab-content space-y-12">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                       <div><h4 class="text-lg font-medium text-center mb-2">Average AQI by Month</h4><div class="h-[350px]"><canvas id="byMonthChart"></canvas></div></div>
+                       <div><h4 class="text-lg font-medium text-center mb-2">Average AQI by Day of Week</h4><div class="h-[350px]"><canvas id="byDayOfWeekChart"></canvas></div></div>
+                   </div>
+                    <div><h4 class="text-lg font-medium text-center mb-2">Average AQI by Hour of Day</h4><div class="h-[350px]"><canvas id="byHourChart"></canvas></div></div>
+               </div>
+               <div id="eda-tab-datatable" class="eda-tab-content">
+                    <h3 class="text-xl font-semibold text-center mb-4">Raw Data (Last 500 Hours)</h3>
+                    <div id="eda-data-table" class="max-h-[500px] overflow-y-auto text-sm"></div>
+               </div>
+           </div>
+       </div>
+   </div>
+</div>
+{% endblock %}

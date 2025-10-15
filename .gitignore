@@ -1,0 +1,17 @@
+venv/
+.venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Cache files from your app
+data/cache/
+
+# Environment variables file (IMPORTANT for security)
+.env
+
+# IDE and OS specific files
+.vscode/
+.idea/
+.DS_Store

@@ -1,0 +1,10 @@
+-- schema.sql
+DROP TABLE IF EXISTS users;
+
+CREATE TABLE users (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  username VARCHAR(50) UNIQUE NOT NULL,
+  password VARCHAR(200) NOT NULL,
+  age INT,
+  conditions TEXT
+);

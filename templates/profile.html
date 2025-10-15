@@ -1,0 +1,17 @@
+{% extends "_layout.html" %}
+
+{% block title %}Your Profile - AQI Advisor{% endblock %}
+
+{% block content %}
+<div class="container mx-auto max-w-2xl p-4 md:p-8 mt-10">
+    <div class="bg-white p-8 rounded-2xl shadow-xl">
+        <h2 class="text-3xl font-bold mb-2">Your Profile</h2>
+        <p class="text-slate-500 mb-8">This optional information helps us tailor health advice specifically for you.</p>
+        <form id="profile-form" class="space-y-6">
+            <div><label for="profile-age" class="block text-sm font-medium text-slate-700">Your Age</label><input type="number" id="profile-age" name="age" class="form-input mt-1" min="0" placeholder="e.g., 35"></div>
+            <div><label for="profile-conditions" class="block text-sm font-medium text-slate-700">Pre-existing Conditions</label><textarea id="profile-conditions" name="conditions" class="form-input h-24 mt-1" placeholder="e.g., Asthma, COPD, Heart Condition"></textarea><p class="text-xs text-slate-500 mt-1">Separate conditions with a comma.</p></div>
+            <div class="pt-2"><button type="submit" class="btn btn-primary">Save Profile</button></div>
+        </form>
+    </div>
+</div>
+{% endblock %}

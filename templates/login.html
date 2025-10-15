@@ -1,0 +1,21 @@
+{% extends "_layout.html" %}
+
+{% block title %}Login - AQI Advisor{% endblock %}
+
+{% block content %}
+<div class="min-h-[80vh] flex items-center justify-center px-4 py-12">
+    <div class="w-full max-w-4xl bg-white rounded-2xl shadow-xl overflow-hidden grid md:grid-cols-2">
+        <div class="p-8 md:p-12">
+            <h2 class="text-3xl font-bold text-slate-900 mb-2">Welcome Back</h2>
+            <p class="text-slate-500 mb-8">Sign in to access your personalized dashboard.</p>
+            <form id="login-form" class="space-y-6">
+                <div><label for="login-username" class="block text-sm font-medium text-slate-700">Username</label><input type="text" id="login-username" name="username" class="form-input mt-1" required></div>
+                <div><label for="login-password" class="block text-sm font-medium text-slate-700">Password</label><input type="password" id="login-password" name="password" class="form-input mt-1" required></div>
+                <button type="submit" class="w-full btn btn-primary">Sign In</button>
+            </form>
+            <p class="text-center text-sm text-slate-500 mt-8">Don't have an account? <a href="/register" class="font-semibold text-violet-600 hover:underline">Register now</a></p>
+        </div>
+        <div class="hidden md:block bg-gradient-to-br from-violet-500 to-indigo-600 p-12 text-white"><h3 class="text-2xl font-bold">Intelligent Air Quality Insights</h3><p class="mt-4 opacity-80">Our models analyze dozens of factors to give you the most accurate prediction of current and future air quality.</p></div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "_layout.html" %}
+
+{% block title %}Welcome - AQI Advisor{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-32 text-center">
+    <h1 class="text-4xl sm:text-6xl font-extrabold text-slate-900 tracking-tight">
+        Breathe Smarter in <span class="text-yellow-900">Kathmandu</span>
+    </h1>
+    <p class="mt-6 max-w-2xl mx-auto text-lg text-slate-600">
+        Your personal guide to real-time air quality. Get live data, future forecasts, and personalized health advice based on your profile.
+    </p>
+    <div class="mt-10 flex justify-center gap-4">
+        <a href="/dashboard" class="btn btn-primary text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">View Live Dashboard</a>
+        <a href="/register" class="btn btn-secondary text-lg">Create Account</a>
+    </div>
+</div>
+{% endblock %}

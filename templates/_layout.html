@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}AQI Advisor{% endblock %}</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head> 
+<body class="antialiased">
+
+    <nav class="bg-white/80 backdrop-blur-lg shadow-sm sticky top-0 z-40">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <a class="flex items-center gap-2 text-xl font-bold text-gray-800" href="/">
+                    <svg class="h-6 w-6 text-brown-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12h2.5M6 12h2.5M18.5 12H21M18.5 12h-2.5M12 3v2.5M12 6v2.5M12 18.5V21M12 18.5v-2.5M4.929 4.929l1.768 1.768M17.303 17.303l1.768 1.768M4.929 19.071l1.768-1.768M17.303 6.697l1.768-1.768"/></svg>
+                    <span>AQI Advisor</span>
+                </a>
+                <div id="nav-links" class="flex items-center space-x-2 sm:space-x-4">
+                    </div>
+            </div>
+        </div>
+    </nav>
+    <div id="flash-container" class="fixed top-20 right-4 z-50 w-full max-w-sm"></div>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

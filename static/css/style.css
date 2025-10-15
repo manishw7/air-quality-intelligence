@@ -1,0 +1,119 @@
+
+:root {
+    --c-primary: #166534;
+    --c-primary-light: #15803d;
+    --c-bg: #f1f5f9;
+    --c-surface: #ffffff; 
+    --c-text-primary: #1e293b; 
+    --c-text-secondary: #64748b;
+}
+
+body { 
+    font-family: 'Inter', sans-serif; 
+    background-color: var(--c-bg); 
+    color: var(--c-text-primary); 
+}
+
+.page { 
+    display: none; 
+    animation: fadeIn 0.5s ease-in-out; 
+}
+
+.page.active { 
+    display: block; 
+}
+
+@keyframes fadeIn { 
+    from { opacity: 0; transform: translateY(10px); } 
+    to { opacity: 1; transform: translateY(0); } 
+}
+
+.loader { 
+    border: 4px solid rgba(255,255,255,0.2); 
+    border-left-color: #ffffff; 
+    border-radius: 50%; 
+    width: 32px; 
+    height: 32px; 
+    animation: spin 1s linear infinite; 
+}
+
+@keyframes spin { 
+    to { transform: rotate(360deg); } 
+}
+
+.form-input { 
+    width: 100%; 
+    padding: 0.75rem 1rem; 
+    border-radius: 0.5rem; 
+    border: 1px solid #d1d5db; 
+    background-color: #f8fafc; 
+    transition: all 0.2s; 
+}
+
+.form-input:focus { 
+    outline: none; 
+    border-color: var(--c-primary); 
+    box-shadow: 0 0 0 3px rgba(109, 40, 217, 0.2); 
+}
+
+.btn { 
+    display: inline-flex; 
+    align-items: center; 
+    justify-content: center; 
+    padding: 0.75rem 1.5rem; 
+    border-radius: 0.5rem; 
+    font-weight: 600; 
+    transition: all 0.2s; 
+    cursor: pointer; 
+    border: 1px solid transparent; 
+}
+
+.btn-primary { 
+    background-color: var(--c-primary); 
+    color: white; 
+}
+
+.btn-primary:hover { 
+    background-color: var(--c-primary-light); 
+}
+
+.btn-secondary { 
+    background-color: var(--c-surface); 
+    color: var(--c-primary); 
+    border-color: #e2e8f0; 
+}
+
+.btn-secondary:hover { 
+    background-color: #f8fafc; 
+}
+
+.aqi-card-gradient { 
+    transition: background-color 0.8s ease, background-image 0.8s ease; 
+}
+
+.eda-tab { 
+    padding: 0.5rem 1rem; 
+    border-bottom: 2px solid transparent; 
+    color: #94a3b8; 
+    font-weight: 600; 
+    cursor: pointer; 
+    transition: all 0.2s; 
+}
+
+.eda-tab:hover { 
+    color: #e2e8f0; 
+}
+
+.eda-tab.active { 
+    color: var(--c-primary-light); 
+    border-bottom-color: var(--c-primary-light); 
+}
+
+.eda-tab-content { 
+    display: none; 
+}
+
+.eda-tab-content.active { 
+    display: block; 
+    animation: fadeIn 0.5s; 
+}
