@@ -17,7 +17,6 @@ from io import StringIO
 
 pd.set_option('future.no_silent_downcasting', True)
 
-# --- Initialize Flask App ---
 app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY', 'a_super_secret_key_for_dev')
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=30)
@@ -49,7 +48,6 @@ def profile_page():
     """Renders the user profile page."""
     return render_template('profile.html')
 
-# --- Configuration & File Paths ---
 LATITUDE = 27.7172
 LONGITUDE = 85.3240
 N_PAST = 72
@@ -59,7 +57,6 @@ CACHE_FILE = os.path.join(CACHE_DIR, 'live_df_cache.json')
 CACHE_TIMEOUT = 3600
 os.makedirs(CACHE_DIR, exist_ok=True)
 
-# --- Model & Static Data Paths ---
 REGRESSION_MODEL_PATH = os.path.join(BASE_DIR, 'models', 'model.pkl')
 PERSONAL_RISK_MODEL_PATH = os.path.join(BASE_DIR, 'models', 'personal_risk_model.pkl')
 LSTM_MODEL_PATH = os.path.join(BASE_DIR, 'models', 'lstm_model.keras')
@@ -67,7 +64,6 @@ SCALER_PATH = os.path.join(BASE_DIR, 'models', 'scaler.pkl')
 SOIL_IMPUTER_PATH = os.path.join(BASE_DIR, 'models', 'soil_imputer.pkl')
 DATA_PATH = os.path.join(BASE_DIR, 'data', 'processed', 'processed_data.csv')
 
-# --- Load Models & Static Data ---
 regression_model, personal_risk_model, soil_imputer_model, lstm_model, scaler = None, None, None, None, None
 REGRESSION_FEATURE_NAMES, SCALER_FEATURE_NAMES = [], []
 df_static = pd.DataFrame()
@@ -99,8 +95,6 @@ try:
     print(f"Successfully loaded and localized static data for EDA from {DATA_PATH}")
 except Exception as e: print(f"WARNING: Could not load static data for EDA dashboard: {e}")
 
-
-# --- Caching Logic ---
 def get_cached_or_create_live_dataframe():
     now = time.time()
     if os.path.exists(CACHE_FILE):
@@ -120,7 +114,6 @@ def get_cached_or_create_live_dataframe():
     with open(CACHE_FILE, 'w') as f: json.dump(cache_content, f)
     return df
 
-# --- User Model & Auth Logic ---
 class User(UserMixin):
     def __init__(self, id, username, password_hash, age=None, conditions=None):
         self.id, self.username, self.password, self.age, self.conditions = id, username, password_hash, age, conditions
@@ -137,7 +130,6 @@ def load_user(user_id):
     if user_data: return User(user_data['id'], user_data['username'], user_data['password'], user_data['age'], user_data['conditions'])
     return None
 
-# --- Helper Functions ---
 def prepare_personal_model_input(ambient_aqi, user):
     age = user.age if user.age else 30
     conditions = user.conditions.lower() if user.conditions else ""
@@ -165,7 +157,6 @@ def categorize_aqi(aqi):
     elif aqi <= 300: return "Very Unhealthy", "#8f3e97", "Health warnings of emergency conditions.", "😵"
     else: return "Hazardous", "#7f0000", "Health alert: everyone should avoid all outdoor exertion.", "☠️"
 
-# --- Live Dataframe Creation ---
 def create_live_dataframe(end_date):
     if df_static.empty: raise ValueError("Static historical data is not loaded.")
     last_static_date = df_static.index.max()
@@ -251,7 +242,6 @@ def predict():
         cat, color, advice, emoji = categorize_aqi(ambient_aqi)
         perceived_aqi, personal_advice = None, None
         
-        # <<< DEFINITIVE FIX: Check for authentication AND profile data >>>
         if current_user.is_authenticated and (current_user.age or current_user.conditions):
             personal_input_df = prepare_personal_model_input(ambient_aqi, current_user)
             perceived_aqi_pred = personal_risk_model.predict(personal_input_df)[0]
@@ -278,7 +268,6 @@ def forecast_lstm_live():
         forecast_data = []
         for ts, ambient_val in zip(future_ts, final_aqi_prediction):
             perceived_val = None
-            # <<< DEFINITIVE FIX: Check for authentication AND profile data >>>
             if current_user.is_authenticated and (current_user.age or current_user.conditions):
                 personal_input_df = prepare_personal_model_input(ambient_val, current_user)
                 perceived_pred = personal_risk_model.predict(personal_input_df)[0]

@@ -1,9 +1,8 @@
-# database.py
+
 import mysql.connector
 from mysql.connector import errorcode
 import os
 
-# --- IMPORTANT: Set these environment variables or replace the placeholders ---
 DB_HOST = os.environ.get('DB_HOST', 'localhost')
 DB_USER = os.environ.get('DB_USER', 'root')
 DB_PASSWORD = os.environ.get('DB_PASSWORD', '')
@@ -38,7 +37,6 @@ def init_db():
     cursor = conn.cursor()
     
     with open('schema.sql') as f:
-        # Split SQL commands by semicolon and execute them one by one
         sql_commands = f.read().split(';')
         for command in sql_commands:
             if command.strip():
@@ -54,6 +52,4 @@ def init_db():
     print("Database initialized successfully.")
 
 if __name__ == '__main__':
-    # You can run this file directly to set up the database table
-    # python database.py
     init_db()
