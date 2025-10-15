@@ -23,7 +23,7 @@ The primary motivation was to apply software engineering principles and machine 
 
 ## 🛠️ Tech Stack
 
-* **Backend:** Python 3.9, Flask
+* **Backend:** Python 3.13.7, Flask
 * **Machine Learning:** TensorFlow (Keras), Scikit-learn, Pandas, NumPy
 * **Frontend:** HTML, Tailwind CSS, Vanilla JavaScript
 * **Data Visualization:** Chart.js
